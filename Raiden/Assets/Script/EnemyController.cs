@@ -8,7 +8,7 @@ public class EnemyController : MonoBehaviour
     public Transform shotSpaw;
     //发射子弹间隙
     public float shotSpace;
-    //发射子弹等待时间
+    //发射子弹等待时间间隔
     public float shotWait;
 
     // Start is called before the first frame update
