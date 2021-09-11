@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
 
     private float nextFire;
 
+    //test
     void Update()
     {
         if (Input.GetButton("Fire1") && Time.time > nextFire)

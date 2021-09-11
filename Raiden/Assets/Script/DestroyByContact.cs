@@ -6,8 +6,17 @@ public class DestroyByContact : MonoBehaviour
 {
 	public GameObject explosion;
 	public GameObject playerExplosion;
+	//Score when destroy
+	public int score;
+	private GameController game;
 
-	//当其他碰撞器进入当前GameObject的触发器时，销毁该碰撞器对应的游戏对象，同时销毁该GameObject
+	void Start()
+	{
+		GameObject go = GameObject.FindGameObjectWithTag("GameController");
+		game = go.GetComponent<GameController>();
+
+	}
+
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "Boundary" || other.tag == "Enemy" )//for enemy
@@ -24,7 +33,10 @@ public class DestroyByContact : MonoBehaviour
 		if (other.tag == "Player" )//for player
 		{
 			Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
+			game.GameOver();
 		}
+
+		game.AddScore(score);
 
 		//destroy animation
 		Destroy(other.gameObject);
