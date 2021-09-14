@@ -21,6 +21,4 @@ public class EnemyController : MonoBehaviour
     {
         Instantiate(shot, shotSpaw.position, shotSpaw.rotation);
     }
-
-  
 }

@@ -65,6 +65,8 @@ public class GameController : MonoBehaviour
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
+
+
 }
 
 
