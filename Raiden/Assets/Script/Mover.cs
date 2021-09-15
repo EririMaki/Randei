@@ -12,4 +12,5 @@ public class Mover : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.velocity = transform.forward * speed;
     }
+
 }
