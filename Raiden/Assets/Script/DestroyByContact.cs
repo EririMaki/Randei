@@ -8,7 +8,6 @@ public class DestroyByContact : MonoBehaviour
 	public GameObject playerExplosion;
 	//Score when destroy
 	public int score;
-	
 	private GameController game;
 
 	void Start()
@@ -27,8 +26,7 @@ public class DestroyByContact : MonoBehaviour
 		if (other.tag=="buff")
         {
 			return;
-			game.AddScore(score);
-		}
+        }
 		//enemy exp
 		if(explosion!= null)
         {
@@ -45,9 +43,9 @@ public class DestroyByContact : MonoBehaviour
 		//}
 
 		game.AddScore(score);
-		
+
 		//destroy animation
-		
+		Destroy(other.gameObject);
 		Destroy(gameObject);
 	}
 }
