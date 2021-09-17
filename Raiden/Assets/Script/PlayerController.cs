@@ -20,16 +20,46 @@ public class PlayerController : MonoBehaviour
     public float fireRate;
 
     private float nextFire;
+    public bool isbuffed = false;
+    public bool isDuo = false;
 
     //test
     void Update()
     {
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
+        if (isbuffed == false && isDuo == false)
         {
-            nextFire = Time.time + fireRate;
-            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-            GetComponent<AudioSource>().Play();
+            if (Input.GetButton("Fire1") && Time.time > nextFire)
+            {
+                nextFire = Time.time + fireRate;
+                shotSpawn.rotation = Quaternion.Euler(0f, 0f, 0f);
+                Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                GetComponent<AudioSource>().Play();
+            }
         }
+        if (isbuffed == true)
+        {
+            if (Input.GetButton("Fire1") && Time.time > nextFire)
+            {
+                nextFire = Time.time + fireRate;
+                shotSpawn.rotation = Quaternion.Euler(0f, 20f, 0f);
+                Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                shotSpawn.rotation = Quaternion.Euler(0f, -20f, 0f);
+                Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                GetComponent<AudioSource>().Play();
+            }
+        }
+        if (isDuo == true)
+        {
+            if (Input.GetButton("Fire1") && Time.time > nextFire)
+            {
+                nextFire = Time.time + fireRate;
+                shotSpawn.rotation = Quaternion.Euler(0f, 0f, 0f);
+                Instantiate(shot, shotSpawn.position + new Vector3(-0.5f, 0f, 0f), shotSpawn.rotation);
+                Instantiate(shot, shotSpawn.position + new Vector3(0.5f, 0f, 0f), shotSpawn.rotation);
+                GetComponent<AudioSource>().Play();
+            }
+        }
+
     }
 
     void Start()
@@ -53,5 +83,20 @@ public class PlayerController : MonoBehaviour
         );
 
         rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * -tilt);
+    }
+    public void AddFireRate()
+    {
+        fireRate = fireRate * .8f;
+    }
+    public void isBuffed()
+    {
+        Debug.Log("Multiple!");
+        isbuffed = true;
+    }
+    public void isMultipleBuff()
+    {
+        Debug.Log("Multiple!");
+        isDuo = true;
+        isbuffed = false;
     }
 }

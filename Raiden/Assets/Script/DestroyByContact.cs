@@ -23,6 +23,10 @@ public class DestroyByContact : MonoBehaviour
 		{
 			return;
 		}
+		if (other.tag=="buff")
+        {
+			return;
+        }
 		//enemy exp
 		if(explosion!= null)
         {
@@ -30,11 +34,13 @@ public class DestroyByContact : MonoBehaviour
 		}
 
 		//player exp
-		if (other.tag == "Player" )//for player
-		{
-			Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
-			game.GameOver();
-		}
+		//if (other.tag == "Player" )//for player
+		//{
+		//	Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
+		//	Destroy(other.gameObject);
+		//	Destroy(gameObject);
+		//	game.GameOver();
+		//}
 
 		game.AddScore(score);
 
