@@ -27,10 +27,10 @@ public class BulletDestroy : MonoBehaviour
 
 		if (other.tag == "Player")//for enemy
 		{
-			
-			
+			Instantiate(Bulletexplosion, other.transform.position, other.transform.rotation);
+			Destroy(other.gameObject);
 			Destroy(gameObject);
-			
+			game.GameOver();
 		}
 
 	}
