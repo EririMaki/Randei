@@ -15,7 +15,12 @@ public class GameController : MonoBehaviour
 	public float waveWait; //两批敌人之间的间隔时间
 	private int score = 0;
 	public Text playerScore;
+
+	public int life;//玩家血量
+	public Text hp;//血量显示
+
 	public GameObject endPanel;
+
 
 	private bool isGameOver = false;
 
@@ -23,7 +28,7 @@ public class GameController : MonoBehaviour
 	{
 
 		StartCoroutine(SpawnWaves());
-
+		life = 3;
 	}
 
 	IEnumerator SpawnWaves()
@@ -55,10 +60,20 @@ public class GameController : MonoBehaviour
 		playerScore.text = "Score: " + score.ToString();
 	}
 
+	public void getHP(int damage)
+	{
+		life -= damage;
+		Debug.Log("life: " + life);
+		hp.text = "Life: " + life.ToString();
+	}
+
 	public void GameOver()
 	{
-		endPanel.SetActive(true);
-		isGameOver = true;
+		if (life == 0)
+		{
+			endPanel.SetActive(true);
+			isGameOver = true;
+		}
 	}
 
 	public void Restart()
