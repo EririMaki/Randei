@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     public bool isbuffed = false;
     public bool isDuo = false;
 
-    //test
+    //player 1: WASD J
+    //player 2: up, down, left, right, mouse left click
     void Update()
     {
         if (isbuffed == false && isDuo == false)
