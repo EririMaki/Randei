@@ -56,6 +56,12 @@ public class GameController : MonoBehaviour
 
 	public void AddScore(int value)
 	{
+		//Do NOT touch the switch!!
+		//this part is used to make sure the sychronization of score and final score!!
+		switch (life){
+			case 0: return;
+					break;
+		}
 		score += value;
 		Debug.Log("score: " + score);
 		playerScore.text = "Score: " + score.ToString();
@@ -74,7 +80,7 @@ public class GameController : MonoBehaviour
 		{
 			
 			endPanel.SetActive(true);
-			
+			finalScore.text = playerScore.text;
 			isGameOver = true;
 			
 		}
