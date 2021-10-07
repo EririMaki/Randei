@@ -9,10 +9,10 @@ public class BuffController : MonoBehaviour
 	public GameObject[] buffs;
 	public Vector3 spawnValues;
 
-	public int buffCount; //一批敌人的数量
-	public float buffWait; //一批中，单个敌人生成的间隔时间
-	public float startBuffWait; //开始的暂停时间
-	public float BuffwaveWait; //两批敌人之间的间隔时间
+	public int buffCount; //the number of  buffs in one wave
+	public float buffWait; //the gap time between 2 buffs
+	public float startBuffWait; //start and end of the buff
+	public float BuffwaveWait; //time between 2 waves of buff
 
 	void Start()
 	{
