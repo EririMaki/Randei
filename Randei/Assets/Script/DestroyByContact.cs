@@ -22,13 +22,12 @@ public class DestroyByContact : MonoBehaviour
 	{
 		if (other.tag == "Boundary" || other.tag == "Enemy" )//for enemy
 		{
-			
 			return;
 		}
 		if (other.tag=="buff")
         {
 			return;
-			
+			game.AddScore(score);
 		}
 		//enemy exp
 		if(explosion!= null)
@@ -46,9 +45,9 @@ public class DestroyByContact : MonoBehaviour
 		//}
 
 		game.AddScore(score);
-
+		
 		//destroy animation
-
+		
 		Destroy(gameObject);
 	}
 }

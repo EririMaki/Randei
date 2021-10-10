@@ -10,8 +10,6 @@ public class Boundary
 
 public class PlayerController : MonoBehaviour
 {
-    public string player = "1";
-
     public float speed;
     public float tilt;
     public Boundary boundary;
@@ -25,13 +23,12 @@ public class PlayerController : MonoBehaviour
     public bool isbuffed = false;
     public bool isDuo = false;
 
-    //player 1: WASD J
-    //player 2: up, down, left, right, mouse left click
+    //test
     void Update()
     {
         if (isbuffed == false && isDuo == false)
         {
-            if (Input.GetButton("Fire" + player) && Time.time > nextFire)
+            if (Input.GetButton("Fire1") && Time.time > nextFire)
             {
                 nextFire = Time.time + fireRate;
                 shotSpawn.rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -41,7 +38,7 @@ public class PlayerController : MonoBehaviour
         }
         if (isbuffed == true)
         {
-            if (Input.GetButton("Fire" + player) && Time.time > nextFire)
+            if (Input.GetButton("Fire1") && Time.time > nextFire)
             {
                 nextFire = Time.time + fireRate;
                 shotSpawn.rotation = Quaternion.Euler(0f, 20f, 0f);
@@ -53,7 +50,7 @@ public class PlayerController : MonoBehaviour
         }
         if (isDuo == true)
         {
-            if (Input.GetButton("Fire" + player) && Time.time > nextFire)
+            if (Input.GetButton("Fire1") && Time.time > nextFire)
             {
                 nextFire = Time.time + fireRate;
                 shotSpawn.rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -72,9 +69,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-
-        float moveHorizontal = Input.GetAxis("Horizontal" + player);
-        float moveVertical = Input.GetAxis("Vertical" + player);
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
         rb.velocity = movement * speed;

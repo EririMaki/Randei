@@ -15,7 +15,6 @@ public class GameController : MonoBehaviour
 	public float waveWait; //两批敌人之间的间隔时间
 	private int score = 0;
 	public Text playerScore;
-	public Text finalScore;
 
 	public int life;//玩家血量
 	public Text hp;//血量显示
@@ -56,12 +55,6 @@ public class GameController : MonoBehaviour
 
 	public void AddScore(int value)
 	{
-		//Do NOT touch the switch!!
-		//this part is used to make sure the sychronization of score and final score!!
-		switch (life){
-			case 0: return;
-					break;
-		}
 		score += value;
 		Debug.Log("score: " + score);
 		playerScore.text = "Score: " + score.ToString();
@@ -78,11 +71,8 @@ public class GameController : MonoBehaviour
 	{
 		if (life == 0)
 		{
-			
 			endPanel.SetActive(true);
-			finalScore.text = playerScore.text;
 			isGameOver = true;
-			
 		}
 	}
 
@@ -90,15 +80,7 @@ public class GameController : MonoBehaviour
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
-
-	public void ExitGame()
-	{
-	#if UNITY_EDITOR
-    UnityEditor.EditorApplication.isPlaying = false;
-	#else
-		Application.Quit();
-	#endif
-	}
+		
 
 }
 

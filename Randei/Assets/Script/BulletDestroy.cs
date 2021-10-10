@@ -8,7 +8,6 @@ public class BulletDestroy : MonoBehaviour
 	//Score when destroy
 	private GameController game;
 
-
 	void Start()
 	{
 		GameObject go = GameObject.FindGameObjectWithTag("GameController");
@@ -26,10 +25,10 @@ public class BulletDestroy : MonoBehaviour
 			return;
 		}
 
-		if (other.tag == "Player")
+		if (other.tag == "Player")//for enemy
 		{
 			
-
+			
 			Destroy(gameObject);
 			
 		}
