@@ -3,22 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+
 
 public class GameController : MonoBehaviour
 {
 	public GameObject[] enemys;
 	public Vector3 spawnValues;
 
-	public int hazardCount; //Ò»ÅúµÐÈËµÄÊýÁ¿
-	public float spawnWait; //Ò»ÅúÖÐ£¬µ¥¸öµÐÈËÉú³ÉµÄ¼ä¸ôÊ±¼ä
-	public float startWait; //¿ªÊ¼µÄÔÝÍ£Ê±¼ä
-	public float waveWait; //Á½ÅúµÐÈËÖ®¼äµÄ¼ä¸ôÊ±¼ä
+	public int hazardCount; //Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+	public float spawnWait; //Ò»ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ¼ï¿½ï¿½Ê±ï¿½ï¿½
+	public float startWait; //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Í£Ê±ï¿½ï¿½
+	public float waveWait; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½Ä¼ï¿½ï¿½Ê±ï¿½ï¿½
 	private int score = 0;
+	private int baseScore = 0;
 	public Text playerScore;
 	public Text finalScore;
+	public Text playerGold;
+	
 
-	public int life;//Íæ¼ÒÑªÁ¿
-	public Text hp;//ÑªÁ¿ÏÔÊ¾
+
+	public int life;//ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+	public Text hp;//Ñªï¿½ï¿½ï¿½ï¿½Ê¾
 
 	public GameObject endPanel;
 
@@ -27,7 +34,20 @@ public class GameController : MonoBehaviour
 
 	void Start()
 	{
-
+		if (File.Exists(Application.dataPath + "/StreamingFile" + "/byBin.txt"))
+		{
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream fileStream = File.Open(Application.dataPath + "/StreamingFile" + "/byBin.txt",FileMode.Open);
+		GameSaveData save = (GameSaveData)bf.Deserialize(fileStream);
+		fileStream.Close();
+		baseScore = save.score;
+		playerGold.text = "Gold: " + baseScore.ToString();
+		}
+		else
+		{
+        playerGold.text = "Gold: " + baseScore.ToString();
+		}
+		
 		StartCoroutine(SpawnWaves());
 		life = 3;
 	}
@@ -65,6 +85,7 @@ public class GameController : MonoBehaviour
 		score += value;
 		Debug.Log("score: " + score);
 		playerScore.text = "Score: " + score.ToString();
+		playerGold.text = "Gold: " + (baseScore + score).ToString();
 	}
 
 	public void getHP(int damage)
@@ -78,6 +99,13 @@ public class GameController : MonoBehaviour
 	{
 		if (life == 0)
 		{
+			
+			GameSaveData saveData = new GameSaveData();
+			saveData.score = score + baseScore;
+			BinaryFormatter bf = new BinaryFormatter();
+			FileStream fileStream = File.Create(Application.dataPath + "/StreamingFile" + "/byBin.txt");
+			bf.Serialize(fileStream, saveData);
+			fileStream.Close();
 			
 			endPanel.SetActive(true);
 			finalScore.text = playerScore.text;
@@ -98,8 +126,8 @@ public class GameController : MonoBehaviour
 	#else
 		Application.Quit();
 	#endif
-	}
 
+	}
 }
 
 

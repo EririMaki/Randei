@@ -11,16 +11,13 @@ public class Boundary
 public class PlayerController : MonoBehaviour
 {
     public string player = "1";
-
     public float speed;
     public float tilt;
     public Boundary boundary;
     private Rigidbody rb;
-
     public GameObject shot;
     public Transform shotSpawn;
     public float fireRate;
-
     private float nextFire;
     public bool isbuffed = false;
     public bool isDuo = false;
