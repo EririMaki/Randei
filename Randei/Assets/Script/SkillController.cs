@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 [System.Serializable]
 /*use space key to use missile
@@ -45,9 +47,15 @@ public class SkillController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.velocity = transform.forward * skillMoveSpeed;
-
         /*SkillController go = GameObject.FindGameObjectWithTag("GameController");
         game = go.GetComponent<SkillController>();*/
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream fileStream = File.Open(Application.dataPath + "/Savedata" + "/byBin.txt", FileMode.Open);
+        GameSaveData save = (GameSaveData)bf.Deserialize(fileStream);
+        currentSkillNum += save.skill;
+        fileStream.Close();
+        skillDisplay.text = "Skills: " + currentSkillNum.ToString();
+        Debug.Log(currentSkillNum);
     }
 
     /*Skill number cannot be greater than the maximum and less than 0

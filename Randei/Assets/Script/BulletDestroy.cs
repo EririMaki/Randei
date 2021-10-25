@@ -26,7 +26,7 @@ public class BulletDestroy : MonoBehaviour
 			return;
 		}
 
-		if (other.tag == "Player")
+		if (other.tag == "Player" || other.tag == "PlayerBullet")
 		{
 
 			

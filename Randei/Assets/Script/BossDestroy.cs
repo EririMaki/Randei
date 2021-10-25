@@ -21,7 +21,7 @@ public class BossDestroy : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Player")//for boss
+		if (other.tag == "PlayerBullet")//for boss
 		{
 			bossHp = bossHp - damage;
 
@@ -34,6 +34,19 @@ public class BossDestroy : MonoBehaviour
 				game.AddScore(score);
 			}
 			Destroy(other.gameObject);
+		}
+		if (other.tag == "Player")//for boss
+		{
+			bossHp = bossHp - damage;
+
+
+			if (bossHp == 0)
+			{
+				Instantiate(BossExplosion, other.transform.position, other.transform.rotation);
+				Destroy(other.gameObject);
+				Destroy(gameObject);
+				game.AddScore(score);
+			}
 		}
 
 	}

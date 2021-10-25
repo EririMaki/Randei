@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 [System.Serializable]
 public class Boundary
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     //player 1: WASD J
     //player 2: up, down, left, right, mouse left click
+
     void Update()
     {
         if (isbuffed == false && isDuo == false)
@@ -68,6 +71,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream fileStream = File.Open(Application.dataPath + "/Savedata" + "/byBin.txt", FileMode.Open);
+        GameSaveData save = (GameSaveData)bf.Deserialize(fileStream);
+        fireRate = fireRate * save.rate;
+        fileStream.Close();
+        Debug.Log(fireRate);
     }
 
     void FixedUpdate()
