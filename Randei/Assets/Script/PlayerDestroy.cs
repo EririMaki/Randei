@@ -11,14 +11,12 @@ public class PlayerDestroy : MonoBehaviour
 	private GameController game;
 	//private int playerhp = game.life;
 	private int playerhp;
-	
 
 	void Start()
 	{
 		GameObject go = GameObject.FindGameObjectWithTag("GameController");
 		game = go.GetComponent<GameController>();
 		playerhp = game.life;
-		
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -37,6 +35,20 @@ public class PlayerDestroy : MonoBehaviour
 				game.GameOver();
 			}
 			Destroy(other.gameObject);
+		}
+		if (other.tag == "Boss")
+        {
+			game.getHP(damage);
+			playerhp = playerhp - damage;
+
+
+			if (playerhp == 0)
+			{
+				Instantiate(PlayerExplosion, other.transform.position, other.transform.rotation);
+				Destroy(other.gameObject);
+				Destroy(gameObject);
+				game.GameOver();
+			}
 		}
 	}
 }

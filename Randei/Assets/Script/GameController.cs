@@ -22,7 +22,8 @@ public class GameController : MonoBehaviour
 	public int life;//玩家血量
 	public Text hp;//血量显示
 	public Text playerGold;
-	private int baseScore = 0;
+	private int baseGold = 0;
+	private int baseHealth = 0;
 
 	public GameObject endPanel;
 
@@ -39,25 +40,35 @@ public class GameController : MonoBehaviour
 	private float timer = 3f;
 	private float enemy = 1f;
 
-	void Start()
-	{
+	private GameSaveData save = new GameSaveData();
+
+
+	private void Awake()
+    {
 		if (File.Exists(Application.dataPath + "/Savedata" + "/byBin.txt"))
 		{
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream fileStream = File.Open(Application.dataPath + "/Savedata" + "/byBin.txt", FileMode.Open);
-			GameSaveData save = (GameSaveData)bf.Deserialize(fileStream);
+			//GameSaveData save = (GameSaveData)bf.Deserialize(fileStream);
+			save = (GameSaveData)bf.Deserialize(fileStream);
 			fileStream.Close();
-			baseScore = save.score;
-			playerGold.text = "Gold: " + baseScore.ToString();
+			baseGold = save.gold;
+			baseHealth = save.health;
+			playerGold.text = "Gold: " + baseGold.ToString();
 		}
 		else
 		{
-			playerGold.text = "Gold: " + baseScore.ToString();
+			playerGold.text = "Gold: " + baseGold.ToString();
 		}
 
+		life = 3 + baseHealth;
+		hp.text = "Life: " + life.ToString();
+	}
+    void Start()
+	{
 		StartCoroutine(SpawnWaves());
 		StartCoroutine(SpawnBossWaves());
-		life = 3;
+		//life = 3 + baseHealth;
 		difficulty = 0f;
 	}
 
@@ -132,7 +143,7 @@ public class GameController : MonoBehaviour
 		score += value;
 		Debug.Log("score: " + score);
 		playerScore.text = "Score: " + score.ToString();
-		playerGold.text = "Gold: " + (baseScore + score).ToString();
+		playerGold.text = "Gold: " + (baseGold + score).ToString();
 	}
 
 	public void getHP(int damage)
@@ -146,11 +157,12 @@ public class GameController : MonoBehaviour
 	{
 		if (life == 0)
 		{
-			GameSaveData saveData = new GameSaveData();
-			saveData.score = score + baseScore;
+			//GameSaveData saveData = new GameSaveData();
+			save.gold = score + baseGold;
 			BinaryFormatter bf = new BinaryFormatter();
-			FileStream fileStream = File.Create(Application.dataPath + "/Savedata" + "/byBin.txt");
-			bf.Serialize(fileStream, saveData);
+			//save.health = baseHealth;
+			FileStream fileStream = File.Create(Application.dataPath + "/Savedata" + "/byBin.txt" );
+			bf.Serialize(fileStream, save);
 			fileStream.Close();
 
 			endPanel.SetActive(true);

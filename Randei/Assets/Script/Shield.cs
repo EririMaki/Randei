@@ -6,9 +6,9 @@ public class Shield : MonoBehaviour
 {
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Shield")//for shield
+		if (other.tag == "PlayerBullet")//for shield
 		{
-			//Destroy(gameObject);
+			Destroy(other.gameObject);
 		}
 	}
 
