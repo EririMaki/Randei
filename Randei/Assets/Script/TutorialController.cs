@@ -6,20 +6,9 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-/*
- * Warning!!!!
- * If there is an error says that the int Array from GameSaveData is NULL (which is the data from binary formatter)
- * developers have to delete the save file from Asset --> Savedata --> byBin.txt
- * 
- * The reason seems like if u use different machine, and was working with different save file e.g. one file only contains int health, another contains int health and some other things
- * Then the BinaryFormatter will ignore the changes. But if u made changes in the same PC then there won't be problems
- * 
- * We was struggled from this strenge issue for hours!!!!!!!!
- * WDNMD�����
- * */
-public class GameController : MonoBehaviour
+public class TutorialController : MonoBehaviour
 {
-	public GameObject[] enemys;
+    public GameObject[] enemys;
 	public Vector3 spawnValues;
 
 	public int hazardCount; //һ�����˵�����
@@ -27,13 +16,10 @@ public class GameController : MonoBehaviour
 	public float startWait; //��ʼ����ͣʱ��
 	public float waveWait; //��������֮��ļ��ʱ��
 	public int score = 0;//��Ϸ����
-	public Text playerScore;//��¼������TEXT
-	public Text finalScore;//���÷ֵ�TEXT
 	public int HScore = 0;//��߷���
 	public int life;//���Ѫ��
 	public Text hp;//Ѫ����ʾ
-	public Text playerGold;
-	private int baseGold = 0;
+
 	private int baseHealth = 0;
 
 	public GameObject endPanel;
@@ -56,27 +42,11 @@ public class GameController : MonoBehaviour
 
 	private void Awake()
     {
-		if (File.Exists(Application.dataPath + "/Savedata" + "/byBin.txt"))
-		{
-			BinaryFormatter bf = new BinaryFormatter();
-			FileStream fileStream = File.Open(Application.dataPath + "/Savedata" + "/byBin.txt", FileMode.Open);
-			//GameSaveData save = (GameSaveData)bf.Deserialize(fileStream);
-			save = (GameSaveData)bf.Deserialize(fileStream);
-			fileStream.Close();
-			baseGold = save.gold;
-			baseHealth = save.health;
-			// playerGold.text = "Gold: " + baseGold.ToString();
-		}
-
-		else
-		{
-			playerGold.text = "Gold: " + baseGold.ToString();
-		}
-        
-		
+		       		
 		life = 3 + baseHealth;
 		hp.text = "Life: " + life.ToString();
 	}
+
     void Start()
 	{
 		StartCoroutine(SpawnWaves());
@@ -173,22 +143,6 @@ public class GameController : MonoBehaviour
 		   compo.GetComponent<Image>().color = Color.white;
         }
 
-		
-		BossTimer -= Time.deltaTime;
-		timer -= Time.deltaTime;
-		//Set timer to increase number of boss respawn
-		if (BossTimer <= 0)
-		{
-			difficulty += 1;
-			BossTimer = 16f;
-			Debug.Log(difficulty);
-		}
-		//Set timer to increase number of enemies respawn
-		if (BossTimer <= 0)
-		{
-			enemy += 1;
-			timer = 3f;
-		}
 	}
 
 	IEnumerator SpawnWaves()
@@ -242,8 +196,6 @@ public class GameController : MonoBehaviour
 		}
 		score += value;
 		Debug.Log("score: " + score);
-		playerScore.text = "Score: " + score.ToString();
-		playerGold.text = "Gold: " + (baseGold + score).ToString();
 	}
 
 	public void getHP(int damage)
@@ -258,7 +210,6 @@ public class GameController : MonoBehaviour
 		if (life == 0)
 		{
 			//GameSaveData saveData = new GameSaveData();
-			save.gold = score + baseGold;			
 			RankingSortSave(score, save);//enter parameter for calculation
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream fileStream = File.Create(Application.dataPath + "/Savedata" + "/byBin.txt" );
@@ -266,7 +217,6 @@ public class GameController : MonoBehaviour
 			fileStream.Close();
 
 			endPanel.SetActive(true);
-			finalScore.text = "Game Over!\n" + playerScore.text;
 			isGameOver = true;
 		}
        
@@ -316,5 +266,3 @@ public class GameController : MonoBehaviour
 	#endif
 	}
 }
-
-
