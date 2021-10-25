@@ -6,6 +6,17 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
+/*
+ * Warning!!!!
+ * If there is an error says that the int Array from GameSaveData is NULL (which is the data from binary formatter)
+ * developers have to delete the save file from Asset --> Savedata --> byBin.txt
+ * 
+ * The reason seems like if u use different machine, and was working with different save file e.g. one file only contains int health, another contains int health and some other things
+ * Then the BinaryFormatter will ignore the changes. But if u made changes in the same PC then there won't be problems
+ * 
+ * We was struggled from this strenge issue for hours!!!!!!!!
+ * WDNMD就无语！
+ * */
 public class GameController : MonoBehaviour
 {
 	public GameObject[] enemys;
@@ -40,8 +51,8 @@ public class GameController : MonoBehaviour
 	private float timer = 3f;
 	private float enemy = 1f;
 
-	private GameSaveData save = new GameSaveData();
-
+	public GameSaveData save = new GameSaveData();
+	int[] currentArray = new int[5];
 
 	private void Awake()
     {
@@ -60,7 +71,8 @@ public class GameController : MonoBehaviour
 		{
 			playerGold.text = "Gold: " + baseGold.ToString();
 		}
-
+        
+		
 		life = 3 + baseHealth;
 		hp.text = "Life: " + life.ToString();
 	}
@@ -68,7 +80,6 @@ public class GameController : MonoBehaviour
 	{
 		StartCoroutine(SpawnWaves());
 		StartCoroutine(SpawnBossWaves());
-		//life = 3 + baseHealth;
 		difficulty = 0f;
 	}
 
@@ -158,27 +169,51 @@ public class GameController : MonoBehaviour
 		if (life == 0)
 		{
 			//GameSaveData saveData = new GameSaveData();
-			save.gold = score + baseGold;
+			save.gold = score + baseGold;			
+			RankingSortSave(score, save);//enter parameter for calculation
 			BinaryFormatter bf = new BinaryFormatter();
-			//save.health = baseHealth;
 			FileStream fileStream = File.Create(Application.dataPath + "/Savedata" + "/byBin.txt" );
 			bf.Serialize(fileStream, save);
 			fileStream.Close();
 
 			endPanel.SetActive(true);
-			//endPanel.SetActive(true);
 			finalScore.text = "Game Over!\n" + playerScore.text;
 			isGameOver = true;
 		}
-        /*if (score > HScore)
-        {
-            HScore = score;
-            //将最高分数存储
-            PlayerPrefs.SetInt("High", HScore);
-        }*/
+       
     }
 
-	public void Restart()
+
+    //sorting the ranking before serialize it
+    public void RankingSortSave(int currentScore, GameSaveData saveData)
+    {
+        //GameSaveData gameData = new GameSaveData();
+        //Must clearify the System IO ports for using array sorting
+        //but do not only using System, otherwise you cannot use Random because that Random is conflict and unclear.
+        //can be solve in seetings by changing .net to .NET2.0. However, I donot recomment to do so
+        //as we can clearify the System to the Array.Sort when we use it. --- Tai
+
+        System.Array.Sort(saveData.ranking);//sorting the array
+        System.Array.Reverse(saveData.ranking);//Reverse array for Descending order
+                                           //Please do not use foreach in the Update(), it will cause many memory wastes.		
+
+        foreach (var item in save.ranking)
+        {
+            if (item < currentScore)
+            {
+                int arrLength = saveData.ranking.Length;
+                int index = System.Array.IndexOf(saveData.ranking, item);
+				saveData.ranking[arrLength - 1] = item;
+				saveData.ranking[index] = currentScore;
+                System.Array.Sort(saveData.ranking);//sorting the array
+                System.Array.Reverse(saveData.ranking);//Reverse array for Descending order
+                break;
+            }
+        }
+    }
+
+
+    public void Restart()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
