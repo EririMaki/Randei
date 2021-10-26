@@ -217,7 +217,14 @@ public class GameController : MonoBehaviour
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 
-	public void ExitGame()
+    public void DuoRestart()
+    {
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+        Time.timeScale = 1f;
+    }
+
+    public void ExitGame()
 	{
 	#if UNITY_EDITOR
     UnityEditor.EditorApplication.isPlaying = false;
