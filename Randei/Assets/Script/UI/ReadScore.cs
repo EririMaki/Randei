@@ -5,6 +5,10 @@ using UnityEngine.UI;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
+/*This script is used for player permanent upgrade
+ * Read binary data from byBin.txt, deserialize it and assign them to a GameSaveData object
+ * rewrite them after weighting 
+ */
 public class ReadScore : MonoBehaviour
 {
     public Text money;
@@ -27,7 +31,6 @@ public class ReadScore : MonoBehaviour
         BinaryFormatter bf = new BinaryFormatter();
         FileStream fileStream = File.Open(Application.dataPath + "/Savedata" + "/byBin.txt", FileMode.Open,FileAccess.ReadWrite,FileShare.ReadWrite);
         GameSaveData save = (GameSaveData)bf.Deserialize(fileStream);
-        //i = save.health;
         fileStream.Flush();
         fileStream.Close();
         if(save.gold > 500)
