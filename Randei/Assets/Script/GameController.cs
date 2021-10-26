@@ -15,23 +15,23 @@ using System.Runtime.Serialization.Formatters.Binary;
  * Then the BinaryFormatter will ignore the changes. But if u made changes in the same PC then there won't be problems
  * 
  * We was struggled from this strenge issue for hours!!!!!!!!
- * WDNMDï¿½ï¿½ï¿½ï¿½ï¿½ï£¡
+ * WDNMD¾ÍÎÞÓï£¡
  * */
 public class GameController : MonoBehaviour
 {
 	public GameObject[] enemys;
 	public Vector3 spawnValues;
 
-	public int hazardCount; //Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
-	public float spawnWait; //Ò»ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ¼ï¿½ï¿½Ê±ï¿½ï¿½
-	public float startWait; //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Í£Ê±ï¿½ï¿½
-	public float waveWait; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½Ä¼ï¿½ï¿½Ê±ï¿½ï¿½
-	public int score = 0;//ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½
-	public Text playerScore;//ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½TEXT
-	public Text finalScore;//ï¿½ï¿½ï¿½Ã·Öµï¿½TEXT
-	public int HScore = 0;//ï¿½ï¿½ß·ï¿½ï¿½ï¿½
-	public int life;//ï¿½ï¿½ï¿½Ñªï¿½ï¿½
-	public Text hp;//Ñªï¿½ï¿½ï¿½ï¿½Ê¾
+	public int hazardCount; //Ò»ÅúµÐÈËµÄÊýÁ¿
+	public float spawnWait; //Ò»ÅúÖÐ£¬µ¥¸öµÐÈËÉú³ÉµÄ¼ä¸ôÊ±¼ä
+	public float startWait; //¿ªÊ¼µÄÔÝÍ£Ê±¼ä
+	public float waveWait; //Á½ÅúµÐÈËÖ®¼äµÄ¼ä¸ôÊ±¼ä
+	public int score = 0;//ÓÎÏ··ÖÊý
+	public Text playerScore;//¼ÇÂ¼·ÖÊýµÄTEXT
+	public Text finalScore;//×îºóµÃ·ÖµÄTEXT
+	public int HScore = 0;//×î¸ß·ÖÊý
+	public int life;//Íæ¼ÒÑªÁ¿
+	public Text hp;//ÑªÁ¿ÏÔÊ¾
 	public Text playerGold;
 	private int baseGold = 0;
 	private int baseHealth = 0;
@@ -60,14 +60,12 @@ public class GameController : MonoBehaviour
 		{
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream fileStream = File.Open(Application.dataPath + "/Savedata" + "/byBin.txt", FileMode.Open);
-			//GameSaveData save = (GameSaveData)bf.Deserialize(fileStream);
 			save = (GameSaveData)bf.Deserialize(fileStream);
 			fileStream.Close();
 			baseGold = save.gold;
 			baseHealth = save.health;
-			// playerGold.text = "Gold: " + baseGold.ToString();
+			playerGold.text = "Gold: " + baseGold.ToString();
 		}
-
 		else
 		{
 			playerGold.text = "Gold: " + baseGold.ToString();
@@ -86,94 +84,6 @@ public class GameController : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.W))
-
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonW").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.blue;
-
-		Debug.Log(compo);
-        }
-
-		if (Input.GetKeyUp(KeyCode.W))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonW").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.white;
-        }
-
-		if (Input.GetKeyDown(KeyCode.A))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonA").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.blue;
-        }
-
-		if (Input.GetKeyUp(KeyCode.A))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonA").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.white;
-        }
-
-		if (Input.GetKeyDown(KeyCode.S))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonS").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.blue;
-        }
-
-		if (Input.GetKeyUp(KeyCode.S))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonS").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.white;
-        }
-
-		if (Input.GetKeyDown(KeyCode.D))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonD").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.blue;
-        }
-
-		if (Input.GetKeyUp(KeyCode.D))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonD").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.white;
-        }
-
-		if (Input.GetKeyDown(KeyCode.J))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonJ").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.blue;
-        }
-
-		if (Input.GetKeyUp(KeyCode.J))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonJ").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.white;
-        }
-
-		if (Input.GetKeyDown(KeyCode.Space))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonSpace").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.blue;
-        }
-
-		if (Input.GetKeyUp(KeyCode.Space))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonSpace").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.white;
-        }
-
-		if (Input.GetKeyDown(KeyCode.RightControl))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonCtrl").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.blue;
-        }
-
-		if (Input.GetKeyUp(KeyCode.RightControl))
-        {
-           UnityEngine.UI.Button compo = GameObject.Find("ButtonCtrl").GetComponent<UnityEngine.UI.Button>();
-		   compo.GetComponent<Image>().color = Color.white;
-        }
-
-		
 		BossTimer -= Time.deltaTime;
 		timer -= Time.deltaTime;
 		//Set timer to increase number of boss respawn

@@ -40,18 +40,9 @@ public class TutorialController : MonoBehaviour
 	public GameSaveData save = new GameSaveData();
 	int[] currentArray = new int[5];
 
-	private void Awake()
-    {
-		       		
-		life = 3 + baseHealth;
-		hp.text = "Life: " + life.ToString();
-	}
 
     void Start()
 	{
-		StartCoroutine(SpawnWaves());
-		StartCoroutine(SpawnBossWaves());
-		difficulty = 0f;
 	}
 
 	private void Update()
@@ -145,71 +136,10 @@ public class TutorialController : MonoBehaviour
 
 	}
 
-	IEnumerator SpawnWaves()
-	{
-		yield return new WaitForSeconds(startWait);
-		while (true)
-		{
-			for (int i = 0; i < hazardCount + enemy; i++)
-			{
-				int index = Random.Range(0, enemys.Length);
-				GameObject go = enemys[index];
-				Vector3 pos = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
-				Quaternion rot = Quaternion.identity;
-				Instantiate(go, pos, rot);
-				yield return new WaitForSeconds(spawnWait);
-			}
-			if (isGameOver == true)
-			{
-				break;
-			}
-			yield return new WaitForSeconds(waveWait);
-		}
-	}
-
-	IEnumerator SpawnBossWaves()
-	{
-		yield return new WaitForSeconds(startBossWait);
-		while (true)
-		{
-			for (int i = 0; i < bossCount + difficulty; i++)
-			{
-				int index = Random.Range(0, boss.Length);
-				GameObject go = boss[index];
-				Vector3 pos = new Vector3(Random.Range(-spawnBossValues.x, spawnBossValues.x), spawnBossValues.y, spawnBossValues.z);
-				Quaternion rot = Quaternion.identity;
-				Instantiate(go, pos, rot);
-				yield return new WaitForSeconds(bossWait);
-			}
-
-			yield return new WaitForSeconds(BosswaveWait);
-		}
-	}
-
-	public void AddScore(int value)
-	{
-		//Do NOT touch the switch!!
-		//this part is used to make sure the sychronization of score and final score!!
-		switch (life){
-			case 0: return;
-					break;
-		}
-		score += value;
-		Debug.Log("score: " + score);
-	}
-
-	public void getHP(int damage)
-	{
-		life -= damage;
-		Debug.Log("life: " + life);
-		hp.text = "Life: " + life.ToString();
-	}
-
 	public void GameOver()
 	{
 		if (life == 0)
 		{
-			//GameSaveData saveData = new GameSaveData();
 			RankingSortSave(score, save);//enter parameter for calculation
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream fileStream = File.Create(Application.dataPath + "/Savedata" + "/byBin.txt" );
@@ -250,7 +180,6 @@ public class TutorialController : MonoBehaviour
             }
         }
     }
-
 
     public void Restart()
 	{
